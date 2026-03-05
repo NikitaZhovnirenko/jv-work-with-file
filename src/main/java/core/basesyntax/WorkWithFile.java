@@ -7,6 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WorkWithFile {
+    private static final String SUPPLY = "supply";
+    private static final String BUY = "buy";
+    private static final String RESULT = "result";
+
+    private static final String SEPARATOR = ",";
+    private static final int OPERATION_INDEX = 0;
+    private static final int AMOUNT_INDEX = 1;
+
     public void getStatistic(String fromFileName, String toFileName) {
         List<String> lines = readFromFile(fromFileName);
         int[] totals = calculateTotals(lines);
@@ -27,12 +35,13 @@ public class WorkWithFile {
         int buyTotal = 0;
 
         for (String line : lines) {
-            String[] parts = line.split(",");
-            int amount = Integer.parseInt(parts[1]);
+            String[] parts = line.split(SEPARATOR);
+            String operation = parts[OPERATION_INDEX];
+            int amount = Integer.parseInt(parts[AMOUNT_INDEX]);
 
-            if ("supply".equals(parts[0])) {
+            if (SUPPLY.equals(operation)) {
                 supplyTotal += amount;
-            } else if ("buy".equals(parts[0])) {
+            } else if (BUY.equals(operation)) {
                 buyTotal += amount;
             }
         }
@@ -44,9 +53,9 @@ public class WorkWithFile {
         int result = supplyTotal - buyTotal;
 
         List<String> report = new ArrayList<>();
-        report.add("supply," + supplyTotal);
-        report.add("buy," + buyTotal);
-        report.add("result," + result);
+        report.add(SUPPLY + SEPARATOR + supplyTotal);
+        report.add(BUY + SEPARATOR + buyTotal);
+        report.add(RESULT + SEPARATOR + result);
 
         return report;
     }
